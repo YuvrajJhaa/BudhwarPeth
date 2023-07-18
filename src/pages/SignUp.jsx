@@ -1,14 +1,21 @@
-import React ,{useState} from 'react'
-import { Link } from 'react-router-dom';
-import '../index.css'
-import {BsEyeFill, BsEyeSlashFill} from 'react-icons/bs'
-import {FcGoogle} from 'react-icons/fc'
-import OAuth from '../components/OAuth';
-
+import { useState } from "react";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import OAuth from "../components/OAuth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [formData , setFormData] = useState({
     name : "",
     email : "",
@@ -25,7 +32,33 @@ export default function SignIn() {
 
   };
 
+  async function onSubmit (e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+      const user = userCredential.user;
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      toast.success("Sign up was successful");
+      navigate("/");
+     } catch (error) {
+        {
+          toast.error("Something went wrong with the registration");
+        }
+      }
+  }
   
   return (
     <section className='font-Newake'>
@@ -35,7 +68,7 @@ export default function SignIn() {
           <img src="https://img.freepik.com/free-vector/sign-concept-illustration_114360-5425.jpg" className='w-full' alt="" />
         </div>
       <div className='w-full md:w-[50%] lg:w-[40%] lg:ml-20'>
-        <form>
+        <form onSubmit={onSubmit}>
           <input className='w-full py-2 mb-3 rounded-sm px-4 transition ease-in-out' onChange={onChange} id='name' value={name} type="text" placeholder='Full Name ' />
           <input className='w-full py-2 mb-3 rounded-sm px-4 transition ease-in-out' onChange={onChange} id='email' value={email} type="text" placeholder='Email Address ' />
           <div className='relative'>
