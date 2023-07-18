@@ -2,15 +2,28 @@ import React ,{useState} from 'react'
 import { Link } from 'react-router-dom';
 import '../index.css'
 import OAuth from '../components/OAuth';
-
+import { getAuth ,sendPasswordResetEmail } from 'firebase/auth';
+import {toast} from "react-toastify"
 
 
 export default function SignIn() {
 
   const [email , setEmail] = useState("");
+
   function onChange (e){
     setEmail(e.target.value);
   };
+  async function onSubmit(e){
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Reset Email Sent Successfully")
+    } catch (error) {
+      toast.error("Email does not exists");
+      
+    }
+  }
 
 
   
@@ -22,7 +35,7 @@ export default function SignIn() {
           <img src="https://img.freepik.com/free-vector/sign-concept-illustration_114360-5425.jpg" className='w-full' alt="" />
         </div>
       <div className='w-full md:w-[50%] lg:w-[40%] lg:ml-20'>
-        <form>
+        <form onSubmit={onSubmit}>
           <input className='w-full py-2 mb-3 rounded-sm px-4 transition ease-in-out' onChange={onChange} id='email' value={email} type="text" placeholder='Email Address ' />
         <div className='flex lg:mt-3 justify-between text-sm mb-4'>
           <p>Don't have an account?
