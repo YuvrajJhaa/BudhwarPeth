@@ -24,9 +24,6 @@ export default function SignIn() {
       
     }
   }
-
-
-  
   return (
     <section className='font-Newake'>
       <h1 className='text-center text-4xl py-8 '>Forgot Password</h1>
