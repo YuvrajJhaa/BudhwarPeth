@@ -42,7 +42,7 @@ export default function SignIn() {
 
 
   return (
-    <section className='font-Newake'>
+    <section className='Poppins font-bold'>
       <h1 className='text-center text-4xl py-8 '>Sign In</h1>
       <div className='flex max-w-[67%] mx-auto items-center space-x-5 flex-wrap '>
         <div className='md:w-[67%] lg:w-[50%] mb-12 md:mb-6'>
