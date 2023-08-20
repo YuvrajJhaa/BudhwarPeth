@@ -1,7 +1,11 @@
-import React, {useState} from 'react'
+import React,  {useState} from 'react'
 import '../App.css' 
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router';
+import {FcHome} from "react-icons/fc"
+import { Link } from 'react-router-dom'
+
+
 export default function Profile() {
     const [formData, setFormData] = useState({
         name: "Yuvraj Jha",
@@ -33,6 +37,18 @@ export default function Profile() {
                     <p onClick={onClick} className='text-blue-500 hover:text-blue-600 cursor-pointer transition duration-200 ease-in-out pl-2 '>Sign Out</p>
                 </div>
            </form>
+           <button
+            type="submit"
+            className="w-full my-4 bg-red-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-red-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-800"
+          >
+            <Link
+              to="/create-listing"
+              className="flex justify-center items-center"
+            >
+              <FcHome className="mr-2 text-3xl bg-red-200 rounded-full p-1 border-2" />
+              Sell or rent your home
+            </Link>
+          </button>
         </div>
     </section>
     </>

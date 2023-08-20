@@ -24,7 +24,6 @@ export default function SignIn() {
   const {name,email, password} = formData;
   function onChange (e){
     setFormData(prevItems => ({
-
       ...prevItems,
       [e.target.id] : e.target.value 
     }
